@@ -119,11 +119,13 @@ function islandora_video_create_mp4($archival_file) {
  *   FALSE on failure.
  */
 function islandora_video_create_ogg($archival_file) {
+	
+	// Changed this method to just use the ffmpeg library instead.
   $archival_file = drupal_realpath($archival_file);
   $out_file = $archival_file . '.ogg';
 
-  $theora_executable = variable_get('islandora_video_ffmpeg2theora_path', 'ffmpeg2theora');
-  $command = "$theora_executable $archival_file -o $out_file";
+  $ffmpeg_executable = variable_get('islandora_video_ffmpeg_path', 'ffmpeg');
+  $command = "$ffmpeg_executable -i $archival_file -vcodec libtheora -acodec libvorbis $out_file";
   $return_value = FALSE;
   exec($command, $output, $return_value);
 
